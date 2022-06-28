@@ -1,1 +1,1 @@
-from src.tiny_emitter import TinyEmitter, set_log_level
+from tiny_emitter import TinyEmitter, set_log_level

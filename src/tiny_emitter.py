@@ -27,7 +27,6 @@ from typing import Dict, Callable, Optional, List
 import logging
 import inspect
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -166,7 +165,6 @@ class TinyEmitter:
         original_init = listener_class.__init__
 
         def listener_init(inner_self, *args, **kwargs):
-
             # first, call the original init
             original_init(inner_self, *args, **kwargs)
             logger.debug(
@@ -218,7 +216,7 @@ class TinyEmitter:
                     return
 
                 # if the function is a static method
-                if EventEmitter._is_static_method(self._classes[class_name], function_name):
+                if TinyEmitter._is_static_method(self._classes[class_name], function_name):
                     return callback(*args, **kwargs)
 
                 # a regular class method - pass the instance in each call

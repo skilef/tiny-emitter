@@ -1,13 +1,11 @@
+import os
+import sys
 import unittest
-import src.tiny_emitter
-
-
-# TODO: implement
+import tiny_emitter
 
 
 class TestSum(unittest.TestCase):
     pass
-
 
 if __name__ == '__main__':
     unittest.main()
