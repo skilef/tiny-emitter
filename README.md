@@ -1,5 +1,6 @@
 # Tiny emitter
 ![example workflow](https://github.com/skilef/tiny-emitter/actions/workflows/python-package.yml/badge.svg)
+
 A lightweight event emitter for Python.
 
 ## Setup
