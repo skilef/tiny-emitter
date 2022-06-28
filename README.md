@@ -8,6 +8,13 @@ A lightweight event emitter for Python.
 pip install tiny_emitter
 ```
 
+## Build and deploy
+```shell
+python -m pip install --upgrade build twine
+python -m build
+python -m twine upload --repository testpypi dist/*
+```
+
 ## Running tests
 ```shell
 pytest
