@@ -27,6 +27,16 @@ from typing import Dict, Callable, Optional, List
 import logging
 import inspect
 
+__author__ = "Felix Korovin"
+__author_email__ = "felix.korovin@icloud.com"
+__copyright__ = "Copyright 2021, Felix Korovin"
+__credits__ = ["Felix Korovin"]
+__contact__ = "https://github.com/skilef"
+__license__ = "MIT"
+__status__ = "Development"
+__version__ = "0.0.1"
+__all__ = ["TinyEmitter", "set_log_level"]
+
 logger = logging.getLogger(__name__)
 
 
@@ -165,6 +175,7 @@ class TinyEmitter:
         original_init = listener_class.__init__
 
         def listener_init(inner_self, *args, **kwargs):
+
             # first, call the original init
             original_init(inner_self, *args, **kwargs)
             logger.debug(
@@ -177,6 +188,17 @@ class TinyEmitter:
 
         return listener_class
 
+    def finalizer(self, method):
+        """Registers a class method as a finalizer, which causes the unlistening.
+        """
+        def wrapper(_self, *args, **kwargs):
+            method(_self, *args, **kwargs)
+            try:
+                self.unlisten(_self)
+            except (ValueError, KeyError):
+                pass
+        return wrapper
+    
     @staticmethod
     def _is_static_method(class_object: object, function_name: str):
         """Checks whether the given function is a static method
@@ -217,7 +239,7 @@ class TinyEmitter:
 
                 # if the function is a static method
                 if TinyEmitter._is_static_method(self._classes[class_name], function_name):
-                    return callback(*args, **kwargs)
+                    callback(*args, **kwargs)
 
                 # a regular class method - pass the instance in each call
                 else:
@@ -225,8 +247,8 @@ class TinyEmitter:
                     list_of_instances = self._instances[class_name] if instances is None else instances
 
                     for instance in list_of_instances:
-                        return callback(instance, *args, *kwargs)
+                        callback(instance, *args, *kwargs)
 
             # if it is a regular function
             else:
-                return callback(*args, **kwargs)
+                callback(*args, **kwargs)
